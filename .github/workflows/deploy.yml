@@ -1,10 +1,9 @@
-
 name: server Auto Deploy
 
 run-name: Deploy by @${{github.actor}}
 
 # 触发条件
-on: 
+on:
   push:
     branch:
       - main
@@ -16,19 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 上传代码到服务器
-      -name: Push Code To Server
-       uses: appleboy/scp-action@master
-       with:
-        host: ${{secrets.HOST}}
-        username: ${{secrets.SERVER_USERNAME}}
-        password: ${{secrets.SERVER_PASSWORD}}
-        source: './'
-        target: /root/server/
-      
+      - name: Push Code To Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{secrets.SERVER_USERNAME}}
+          password: ${{secrets.SERVER_PASSWORD}}
+          source: './'
+          target: /root/server/
+
       # 连接服务器安装依赖重启服务
       - name: Install And Restart
         uses: appleboy/ssh-action@master
-        with: 
+        with:
           host: ${{secrets.HOST}}
           username: ${{secrets.SERVER_USERNAME}}
           password: ${{secrets.SERVER_PASSWORD}}
@@ -36,5 +35,4 @@ jobs:
             cd /root/server
             pnpm i
             pnpm run build
-            pm2 restart ./dist/main.js --name server 
-    
+            pm2 restart ./dist/main.js --name server
