@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateQrcodeDto {
+export class findQrcodeDto {
+  @ApiProperty({ description: 'id' })
+  id?: string;
+
   @ApiProperty({ description: '编码查询' })
   code?: string;
 
@@ -13,9 +16,9 @@ export class UpdateQrcodeDto {
   @ApiProperty({ description: '编辑状态' })
   status?: 0 | 1;
 
-  @ApiProperty({ description: '删除状态' })
-  delFlag?: 0 | 1;
+  @ApiProperty({ description: '页码' })
+  pageIndex?: number;
 
-  @ApiProperty({ description: '删除状态' })
-  updateDate?: string;
+  @ApiProperty({ description: '页数' })
+  pageSize?: number;
 }

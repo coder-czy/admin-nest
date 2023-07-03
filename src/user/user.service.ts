@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository, Like, EntityManager } from 'typeorm';
+import { Repository, EntityManager } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { genSalt, hash, compare } from 'bcryptjs';

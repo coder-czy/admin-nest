@@ -1,6 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { QrcodeService } from './qrcode.service';
-import { CreateQrcodeDto } from './dto/create-qrcode.dto';
+import { CreateQrcodeDto, findAllDto } from './dto/create-qrcode.dto';
 import { UpdateQrcodeDto } from './dto/update-qrcode.dto';
 
 @Controller('qrcode')
@@ -8,27 +17,39 @@ export class QrcodeController {
   constructor(private readonly qrcodeService: QrcodeService) {}
 
   @Post()
-  create(@Body() createQrcodeDto: CreateQrcodeDto) {
-    return this.qrcodeService.create(createQrcodeDto);
+  create(@Body() dto: findAllDto) {
+    return this.qrcodeService.create(dto.number);
   }
 
   @Get()
-  findAll() {
-    return this.qrcodeService.findAll();
+  findAll(
+    @Query('pageIndex') pageIndex: number,
+    @Query('pageSize') pageSize: number,
+    @Query('code') code: string,
+    @Query('areaCode') areaCode: string,
+    @Query('customer') customer: string,
+    @Query('id') id: string,
+    @Query('status') status: 0 | 1,
+  ) {
+    return this.qrcodeService.findAll({
+      pageIndex,
+      pageSize,
+      code,
+      areaCode,
+      customer,
+      id,
+      status,
+    });
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.qrcodeService.findOne(+id);
+  @Get('/one')
+  findOne(@Query('id') id: string) {
+    return this.qrcodeService.findAll({
+      id,
+    });
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateQrcodeDto: UpdateQrcodeDto) {
-    return this.qrcodeService.update(+id, updateQrcodeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.qrcodeService.remove(+id);
+    return this.qrcodeService.update(id, updateQrcodeDto);
   }
 }
